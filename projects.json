@@ -1,0 +1,14 @@
+[
+  {
+    "repo": "yourusername/roi-calculator"
+  },
+  {
+    "repo": "yourusername/prompt-manager",
+    "description": "Це мій кастомний опис. Він замінить стандартний опис із GitHub, бо на GitHub він надто технічний."
+  },
+  {
+    "repo": "yourusername/css-grid-builder",
+    "title": "Super Grid Maker",
+    "tech": ["CustomTag", "CSS"]
+  }
+]
