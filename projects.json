@@ -1,14 +1,16 @@
 [
   {
-    "repo": "yourusername/roi-calculator"
+    "repo": "yourusername/my-awesome-app",
+    "title": "Мій найкращий проєкт",
+    "description": "Кастомний опис проєкту, який перекриває стандартний опис із GitHub.",
+    "tech": ["React", "TypeScript", "Tailwind CSS"],
+    "liveUrl": "https://my-awesome-app.vercel.app"
   },
   {
-    "repo": "yourusername/prompt-manager",
-    "description": "Це мій кастомний опис. Він замінить стандартний опис із GitHub, бо на GitHub він надто технічний."
+    "repo": "yourusername/another-tool",
+    "tech": ["Node.js", "Express", "PostgreSQL"]
   },
   {
-    "repo": "yourusername/css-grid-builder",
-    "title": "Super Grid Maker",
-    "tech": ["CustomTag", "CSS"]
+    "repo": "yourusername/simple-script"
   }
 ]
