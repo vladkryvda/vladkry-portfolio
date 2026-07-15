@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer & Builder | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0a0a0a;             /* Глибокий чорний */
+            --card-bg: #111111;        /* Ледь світліший чорний */
+            --border: #1a1a1a;         /* Ультратонка межа */
+            --border-hover: #2a2a2a;   /* Межа при наведенні */
+            --text-main: #f5f5f5;      /* Контрастний білий */
+            --text-muted: #888888;     /* Тьмяний сірий */
+            --status-green: #10b981;   /* Зелений індикатор активності */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Головний контейнер-сітка */
+        .layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            min-height: 100vh;
+            max-width: 1100px;
+            margin: 0 auto;
+            gap: 60px;
+            padding: 80px 40px;
+        }
+
+        /* ЛІВА КОЛОНКА (Фіксована / Стікі) */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .profile h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+        }
+
+        .profile p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Зелений статус "Available" (дуже цінується в Discord-спільнотах) */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--status-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--status-green);
+        }
+
+        /* Швидкі контакти в лівій колонці */
+        .contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+        }
+
+        .contacts a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contacts a:hover {
+            color: var(--text-main);
+        }
+
+        /* ПРАВА КОЛОНКА (Список проектів) */
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .content-title {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Елегантний рядок проекту */
+        .project-row {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.2s, background-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .project-row:hover {
+            border-color: var(--border-hover);
+            background-color: #141414;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .project-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .project-arrow {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: transform 0.2s, color 0.2s;
+        }
+
+        .project-row:hover .project-arrow {
+            transform: translate(2px, -2px);
+            color: var(--text-main);
+        }
+
+        .project-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 580px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .tech-item {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #555555;
+            background-color: #0d0d0d;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Адаптивність під мобільні */
+        @media (max-width: 768px) {
+            .layout {
+                grid-template-columns: 1fr;
+                padding: 40px 20px;
+                gap: 40px;
+            }
+
+            .sidebar {
+                position: static;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout">
+        
+        <!-- ЛІВА КОЛОНКА -->
+        <aside class="sidebar">
+            <div class="profile">
+                <h1>Builder</h1>
+                <p>Web Developer & rapid prototyping specialist.</p>
+            </div>
+
+            <!-- Статус готовності до роботи -->
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Available for MVPs</span>
+            </div>
+
+            <!-- Соцмережі / Контакти -->
+            <nav class="contacts">
+                <a href="https://discord.com" target="_blank">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Discord: username_here
+                </a>
+                <a href="https://github.com/yourusername" target="_blank">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    GitHub
+                </a>
+            </nav>
+        </aside>
+
+        <!-- ПРАВА КОЛОНКА -->
+        <main class="content">
+            <div>
+                <h2 class="content-title">Featured Projects</h2>
+                <div class="projects-list" id="project-list">
+                    <!-- Проекти генеруються сюди -->
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        // Ваш єдиний масив проектів
+        const projects = [
+            {
+                "title": "SaaS ROI Calculator",
+                "description": "An interactive utility built to analyze subscription payback periods and cash flow models. Handles complex projections in seconds.",
+                "tech": ["HTML", "TailwindCSS", "JS"],
+                "liveUrl": "https://roi-calc-example.vercel.app"
+            },
+            {
+                "title": "Local Prompt Manager",
+                "description": "Offline-first browser tool for saving, searching, and organizing LLM system prompts. Features quick copying and categorization.",
+                "tech": ["HTML", "CSS", "LocalStorage"],
+                "liveUrl": "https://prompts-example.vercel.app"
+            },
+            {
+                "title": "CSS Grid Builder",
+                "description": "Visual drag-and-drop editor to quickly prototype responsive layout structures and generate clean CSS code on the fly.",
+                "tech": ["HTML", "Pure JS", "CSS"],
+                "liveUrl": "https://grid-gen-example.vercel.app"
+            }
+        ];
+
+        function renderProjects() {
+            const container = document.getElementById('project-list');
+            
+            container.innerHTML = projects.map(project => {
+                return `
+                    <a href="${project.liveUrl}" target="_blank" class="project-row">
+                        <div class="project-header">
+                            <span class="project-title">
+                                ${project.title}
+                            </span>
+                            <span class="project-arrow">↗</span>
+                        </div>
+                        <p class="project-desc">${project.description}</p>
+                        <div class="project-tech">
+                            ${project.tech.map(tech => `<span class="tech-item">${tech}</span>`).join('')}
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', renderProjects);
+    </script>
+</body>
+</html>
