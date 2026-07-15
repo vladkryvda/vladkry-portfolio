@@ -1,383 +1,561 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Developer & Builder | Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --card-bg: #111111;
-            --border: #1a1a1a;
-            --border-hover: #2a2a2a;
-            --text-main: #f5f5f5;
-            --text-muted: #888888;
-            --status-green: #10b981;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordan Voss — Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1EFEA;
+    --surface: #FFFFFF;
+    --ink: #15161A;
+    --muted: #86827A;
+    --line: #DBD6CB;
+    --accent: #3346E0;
+    --accent-soft: #E7E9FB;
+code
+Code
+--font-display: 'Space Grotesk', sans-serif;
+--font-body: 'Inter', sans-serif;
+--font-mono: 'IBM Plex Mono', monospace;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+{ margin: 0; padding: 0; box-sizing: border-box; }
+@media (prefers-reduced-motion: reduce) {
+*, *::before, *::after {
+animation-duration: 0.01ms !important;
+animation-iteration-count: 1 !important;
+transition-duration: 0.01ms !important;
+}
+}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
+html { scroll-behavior: smooth; }
 
-        .layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            min-height: 100vh;
-            max-width: 1100px;
-            margin: 0 auto;
-            gap: 60px;
-            padding: 80px 40px;
-        }
+body {
+background: var(--bg);
+color: var(--ink);
+font-family: var(--font-body);
+line-height: 1.5;
+-webkit-font-smoothing: antialiased;
+}
 
-        .sidebar {
-            position: sticky;
-            top: 80px;
-            height: fit-content;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
+::selection { background: var(--accent); color: #fff; }
 
-        .profile h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 8px;
-        }
+a { color: inherit; text-decoration: none; }
 
-        .profile p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
+a:focus-visible,
+button:focus-visible,
+.row:focus-visible {
+outline: 2px solid var(--accent);
+outline-offset: 3px;
+border-radius: 2px;
+}
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 6px 12px;
-            border-radius: 20px;
-            width: fit-content;
-        }
+.wrap {
+max-width: 920px;
+margin: 0 auto;
+padding: 0 32px;
+}
 
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--status-green);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--status-green);
-        }
+/* ---------- HERO ---------- */
 
-        .contacts {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border);
-            padding-top: 30px;
-        }
+.hero {
+padding: 108px 0 88px;
+}
 
-        .contacts a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.hero-eyebrow {
+font-family: var(--font-mono);
+font-size: 13px;
+color: var(--muted);
+letter-spacing: 0.02em;
+margin-bottom: 22px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
 
-        .contacts a:hover {
-            color: var(--text-main);
-        }
+.hero-eyebrow .dot {
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: var(--accent);
+display: inline-block;
+}
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
+.hero h1 {
+font-family: var(--font-display);
+font-weight: 600;
+font-size: clamp(40px, 6vw, 64px);
+letter-spacing: -0.02em;
+line-height: 1.05;
+max-width: 14ch;
+}
 
-        .content-title {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+.hero-role {
+font-family: var(--font-mono);
+font-size: clamp(16px, 2vw, 19px);
+color: var(--accent);
+margin-top: 18px;
+min-height: 1.4em;
+}
 
-        .projects-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+.hero-role .cursor {
+display: inline-block;
+width: 2px;
+height: 1em;
+background: var(--accent);
+margin-left: 2px;
+vertical-align: -0.15em;
+animation: blink 1s step-end infinite;
+}
 
-        /* Оновлена картка: тепер це горизонтальний flex-контейнер */
-        .project-row {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            gap: 24px;
-            align-items: flex-start;
-            transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
-            text-decoration: none;
-            color: inherit;
-        }
+@keyframes blink {
+0%, 100% { opacity: 1; }
+50% { opacity: 0; }
+}
 
-        .project-row:hover {
-            border-color: var(--border-hover);
-            background-color: #141414;
-        }
+.hero p.pitch {
+max-width: 52ch;
+margin-top: 26px;
+font-size: 17px;
+color: #45443f;
+}
 
-        /* Стилі для прев'ю-зображення */
-        .project-preview {
-            width: 180px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            flex-shrink: 0;
-            background-color: #000;
-        }
+.stack-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 32px;
+}
 
-        /* Права частина картки з текстом */
-        .project-info {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex-grow: 1;
-            min-width: 0; /* запобігає виходу тексту за межі */
-        }
+.stack-tags span {
+font-family: var(--font-mono);
+font-size: 12.5px;
+padding: 6px 12px;
+border: 1px solid var(--line);
+border-radius: 100px;
+color: var(--muted);
+background: var(--surface);
+}
 
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
+/* ---------- SECTION LABELS ---------- */
 
-        .project-title {
-            font-size: 1.15rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+.section {
+padding: 72px 0;
+border-top: 1px solid var(--line);
+}
 
-        .project-arrow {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            transition: transform 0.2s, color 0.2s;
-        }
+.section-label {
+font-family: var(--font-mono);
+font-size: 13px;
+color: var(--muted);
+margin-bottom: 36px;
+display: flex;
+align-items: baseline;
+gap: 10px;
+}
 
-        .project-row:hover .project-arrow {
-            transform: translate(2px, -2px);
-            color: var(--text-main);
-        }
+.section-label .path {
+color: var(--ink);
+}
 
-        .project-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            max-width: 100%;
-        }
+.section-label .count {
+color: var(--accent);
+}
 
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 4px;
-        }
+/* ---------- PROJECTS: FILE LISTING ---------- */
 
-        /* Сучасніші круглі теги-капсули */
-        .tech-item {
-            font-size: 0.75rem;
-            color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.03);
-            padding: 4px 10px;
-            border-radius: 100px;
-            border: 1px solid var(--border);
-            text-transform: lowercase;
-        }
+.listing {
+border: 1px solid var(--line);
+border-radius: 10px;
+background: var(--surface);
+overflow: hidden;
+}
 
-        @media (max-width: 768px) {
-            .layout {
-                grid-template-columns: 1fr;
-                padding: 40px 20px;
-                gap: 40px;
-            }
+.listing-header {
+display: grid;
+grid-template-columns: 1fr 100px 100px 80px 60px;
+gap: 16px;
+padding: 14px 22px;
+font-family: var(--font-mono);
+font-size: 11.5px;
+letter-spacing: 0.06em;
+text-transform: uppercase;
+color: var(--muted);
+border-bottom: 1px solid var(--line);
+}
 
-            .sidebar {
-                position: static;
-                border-bottom: 1px solid var(--border);
-                padding-bottom: 40px;
-            }
-        }
+.listing-header span:not(:first-child) {
+text-align: right;
+}
 
-        /* Адаптивність для самої картки на мобільних пристроях */
-        @media (max-width: 600px) {
-            .project-row {
-                flex-direction: column;
-                gap: 16px;
-                padding: 16px;
-            }
-            .project-preview {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 1.91 / 1; /* Зберігає пропорцію GitHub картки */
-            }
-        }
-    </style>
+.row {
+display: grid;
+grid-template-columns: 1fr 100px 100px 80px 60px;
+gap: 16px;
+align-items: center;
+padding: 20px 22px;
+border-bottom: 1px solid var(--line);
+cursor: pointer;
+position: relative;
+transition: background 0.15s ease;
+}
+
+.row:last-child { border-bottom: none; }
+
+.row:hover,
+.row:focus-visible {
+background: var(--accent-soft);
+}
+
+.row-name {
+display: flex;
+flex-direction: column;
+gap: 4px;
+min-width: 0;
+}
+
+.row-name .title {
+font-family: var(--font-display);
+font-weight: 600;
+font-size: 16px;
+letter-spacing: -0.01em;
+}
+
+.row-name .desc {
+font-size: 13.5px;
+color: var(--muted);
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.row-meta {
+font-family: var(--font-mono);
+font-size: 12.5px;
+color: var(--muted);
+text-align: right;
+white-space: nowrap;
+}
+
+.row-status {
+text-align: right;
+}
+
+.row-status .badge {
+font-family: var(--font-mono);
+font-size: 11px;
+padding: 3px 9px;
+border-radius: 100px;
+display: inline-block;
+}
+
+.badge.live { background: var(--accent-soft); color: var(--accent); }
+.badge.archived { background: #ECEAE4; color: var(--muted); }
+
+.row-arrow {
+text-align: right;
+color: var(--muted);
+font-family: var(--font-mono);
+transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.row:hover .row-arrow {
+color: var(--accent);
+transform: translateX(3px);
+}
+
+/* hover preview */
+
+.preview {
+position: fixed;
+width: 260px;
+height: 165px;
+border-radius: 8px;
+overflow: hidden;
+border: 1px solid var(--line);
+box-shadow: 0 20px 40px rgba(20,20,15,0.18);
+pointer-events: none;
+opacity: 0;
+transform: translateY(6px) scale(0.98);
+transition: opacity 0.15s ease, transform 0.15s ease;
+z-index: 50;
+background: var(--surface);
+}
+
+.preview.visible {
+opacity: 1;
+transform: translateY(0) scale(1);
+}
+
+.preview img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+
+@media (max-width: 640px) {
+.preview { display: none; }
+}
+
+/* ---------- ABOUT ---------- */
+
+.about-grid {
+display: grid;
+grid-template-columns: 1.3fr 1fr;
+gap: 48px;
+}
+
+.about-grid p {
+font-size: 16px;
+color: #45443f;
+max-width: 46ch;
+}
+
+.imports {
+font-family: var(--font-mono);
+font-size: 13.5px;
+line-height: 1.9;
+}
+
+.imports .kw { color: var(--accent); }
+.imports .mod { color: var(--ink); }
+.imports .from { color: var(--muted); }
+
+@media (max-width: 720px) {
+.about-grid { grid-template-columns: 1fr; }
+.listing-header span:nth-child(3),
+.row-meta.years { display: none; }
+.listing-header,
+.row { grid-template-columns: 1fr 90px 60px; }
+}
+
+/* ---------- CONTACT ---------- */
+
+.contact {
+padding-bottom: 120px;
+}
+
+.contact-links {
+display: flex;
+flex-wrap: wrap;
+gap: 28px;
+margin-top: 8px;
+}
+
+.contact-links a {
+font-family: var(--font-mono);
+font-size: 14.5px;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+color: var(--ink);
+border-bottom: 1px solid var(--line);
+padding-bottom: 2px;
+transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.contact-links a:hover {
+color: var(--accent);
+border-color: var(--accent);
+}
+
+.contact h2 {
+font-family: var(--font-display);
+font-weight: 600;
+font-size: clamp(26px, 4vw, 34px);
+letter-spacing: -0.01em;
+max-width: 16ch;
+}
+
+.fade-in {
+opacity: 0;
+transform: translateY(14px);
+transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-in.shown {
+opacity: 1;
+transform: translateY(0);
+}
+</style>
+
 </head>
 <body>
-
-    <div class="layout">
-        
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="profile">
-                <h1>Builder</h1>
-                <p>Web Developer & rapid prototyping specialist.</p>
-            </div>
-
-            <div class="status-badge">
-                <span class="status-dot"></span>
-                <span>Available for MVPs</span>
-            </div>
-
-            <nav class="contacts">
-                <a href="https://discord.com" target="_blank">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                    Discord: username_here
-                </a>
-                <a href="https://github.com/yourusername" target="_blank">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                    GitHub
-                </a>
-            </nav>
-        </aside>
-
-        <!-- CONTENT -->
-        <main class="content">
-            <div>
-                <h2 class="content-title">Featured Projects</h2>
-                <div class="projects-list" id="project-list">
-                    <p style="color: var(--text-muted)">Syncing with GitHub...</p>
-                </div>
-            </div>
-        </main>
-
+<div class="wrap hero">
+  <div class="hero-eyebrow"><span class="dot"></span>available for new projects</div>
+  <h1>Jordan Voss</h1>
+  <div class="hero-role" id="typedRole"></div>
+  <p class="pitch">I design and build web products end to end — from interface to database — with a focus on speed, clarity, and code that's easy to hand off.</p>
+  <div class="stack-tags">
+    <span>TypeScript</span>
+    <span>React</span>
+    <span>Node.js</span>
+    <span>PostgreSQL</span>
+    <span>AWS</span>
+  </div>
+</div>
+<div class="wrap section" id="projects">
+  <div class="section-label">
+    <span class="path">~/projects</span>
+    <span class="count" id="projectCount"></span>
+  </div>
+  <div class="listing" id="listing">
+    <div class="listing-header">
+      <span>name</span>
+      <span>stack</span>
+      <span class="row-meta years">year</span>
+      <span>status</span>
+      <span></span>
     </div>
+    <!-- rows injected by JS -->
+  </div>
+</div>
+<div class="wrap section">
+  <div class="section-label"><span class="path">~/about</span></div>
+  <div class="about-grid">
+    <p>
+      I've spent the last six years turning product ideas into shipped software — mostly for startups that needed
+      someone comfortable owning both the frontend and the backend. I care about the parts users never see: load
+      times, error states, and code the next developer won't dread opening.
+    </p>
+    <div class="imports">
+      <div><span class="kw">import</span> <span class="mod">{ frontend }</span> <span class="from">from</span> 'react'</div>
+      <div><span class="kw">import</span> <span class="mod">{ backend }</span> <span class="from">from</span> 'node'</div>
+      <div><span class="kw">import</span> <span class="mod">{ infra }</span> <span class="from">from</span> 'aws'</div>
+      <div><span class="kw">import</span> <span class="mod">{ data }</span> <span class="from">from</span> 'postgres'</div>
+    </div>
+  </div>
+</div>
+<div class="wrap section contact">
+  <div class="section-label"><span class="path">~/contact</span></div>
+  <h2>Have something worth building?</h2>
+  <div class="contact-links">
+    <a href="mailto:hello@jordanvoss.dev">email →</a>
+    <a href="https://github.com/" target="_blank" rel="noopener">github →</a>
+    <a href="https://linkedin.com/" target="_blank" rel="noopener">linkedin →</a>
+    <a href="#" download>resume →</a>
+  </div>
+</div>
+<div class="preview" id="preview"><img id="previewImg" src="" alt=""></div>
+<script>
+  // Функція ініціалізації
+  async function init() {
+    const listing = document.getElementById('listing');
+    const countEl = document.getElementById('projectCount');
 
-    <script>
-        const GITHUB_USERNAME = 'vladkryvda'; // Замініть на свій нікнейм
-        const TARGET_TOPIC = 'portfolio';
+    try {
+      // 1. Завантажуємо дані з нашого зовнішнього файлу projects.json
+      const res = await fetch('projects.json');
+      if (!res.ok) throw new Error('Не вдалося завантажити projects.json');
+      const projects = await res.json();
 
-        const CACHE_KEY = 'portfolio_github_cache_v2'; // Оновили ключ, щоб очистити стару структуру
-        const CACHE_EXPIRY = 30 * 60 * 1000; 
+      // Оновлюємо лічильник проектів
+      countEl.textContent = `${projects.length} shipped`;
 
-        async function init() {
-            const container = document.getElementById('project-list');
-            const cachedData = localStorage.getItem(CACHE_KEY);
-            const cachedTime = localStorage.getItem(CACHE_KEY + '_time');
-            const now = Date.now();
+      // 2. Створюємо HTML-елементи для кожного проекту
+      projects.forEach((p) => {
+        const row = document.createElement('a');
+        row.className = 'row fade-in';
+        row.href = p.link;
+        row.target = "_blank";
+        row.rel = "noopener";
+        row.tabIndex = 0;
+        row.dataset.image = p.image;
+        row.innerHTML = `
+          <div class="row-name">
+            <span class="title">${p.title}</span>
+            <span class="desc">${p.desc}</span>
+          </div>
+          <div class="row-meta">${p.stack}</div>
+          <div class="row-meta years">${p.year}</div>
+          <div class="row-status"><span class="badge ${p.status}">${p.status}</span></div>
+          <div class="row-arrow">↗</div>
+        `;
+        listing.appendChild(row);
+      });
 
-            if (cachedData && cachedTime && (now - cachedTime < CACHE_EXPIRY)) {
-                render(JSON.parse(cachedData));
-                return;
-            }
+      // 3. Активуємо прев'ю-картинки (Тільки після того, як проекти відрендерились!)
+      initPreview();
 
-            try {
-                const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`);
-                if (!response.ok) throw new Error('Failed to fetch from GitHub');
-                
-                const allRepos = await response.json();
+      // 4. Запускаємо анімацію появи елементів при прокрутці
+      initScrollReveal();
 
-                const filteredProjects = allRepos
-                    .filter(repo => repo.topics && repo.topics.includes(TARGET_TOPIC))
-                    .map(repo => {
-                        const formattedTitle = repo.name
-                            .replace(/-/g, ' ')
-                            .replace(/\b\w/g, l => l.toUpperCase());
+    } catch (err) {
+      console.error(err);
+      countEl.textContent = "error loading";
+    }
+  }
 
-                        const techTags = repo.topics.filter(topic => topic !== TARGET_TOPIC);
-                        
-                        if (techTags.length === 0 && repo.language) {
-                            techTags.push(repo.language);
-                        }
+  /* Логіка відображення прев'ю при наведенні */
+  function initPreview() {
+    const preview = document.getElementById('preview');
+    const previewImg = document.getElementById('previewImg');
 
-                        return {
-                            name: repo.name, // Зберігаємо системне ім'я для генерації лінку картинки
-                            title: formattedTitle,
-                            description: repo.description || 'No description provided.',
-                            liveUrl: repo.homepage || repo.html_url, 
-                            tech: techTags
-                        };
-                    });
+    document.querySelectorAll('.row').forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        previewImg.src = row.dataset.image;
+        preview.classList.add('visible');
+      });
+      row.addEventListener('mousemove', (e) => {
+        preview.style.left = Math.min(e.clientX + 24, window.innerWidth - 280) + 'px';
+        preview.style.top = Math.max(e.clientY - 100, 16) + 'px';
+      });
+      row.addEventListener('mouseleave', () => {
+        preview.classList.remove('visible');
+      });
+    });
+  }
 
-                localStorage.setItem(CACHE_KEY, JSON.stringify(filteredProjects));
-                localStorage.setItem(CACHE_KEY + '_time', now.toString());
-
-                render(filteredProjects);
-
-            } catch (error) {
-                console.error(error);
-                container.innerHTML = '<p style="color: var(--text-muted)">Failed to sync with GitHub. Please try again later.</p>';
-            }
+  /* Анімація появи елементів */
+  function initScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('shown');
+          observer.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.15 });
 
-        function render(projectsList) {
-            const container = document.getElementById('project-list');
-            if (projectsList.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted)">No projects tagged with '${TARGET_TOPIC}' found.</p>`;
-                return;
-            }
-            
-            container.innerHTML = projectsList.map(project => {
-                // Шлях до автоматичного зображення репозиторію
-                const imageUrl = `https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${project.name}`;
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  }
 
-                return `
-                    <a href="${project.liveUrl}" target="_blank" class="project-row">
-                        <!-- Зображення-прев'ю -->
-                        <img class="project-preview" src="${imageUrl}" alt="${project.title}" loading="lazy">
-                        
-                        <!-- Текстова інформація -->
-                        <div class="project-info">
-                            <div class="project-header">
-                                <span class="project-title">${project.title}</span>
-                                <span class="project-arrow">↗</span>
-                            </div>
-                            <p class="project-desc">${project.description}</p>
-                            <div class="project-tech">
-                                ${project.tech.map(tech => `<span class="tech-item">${tech}</span>`).join('')}
-                            </div>
-                        </div>
-                    </a>
-                `;
-            }).join('');
-        }
+  /* Ефект друку тексту в шапці (залишається без змін) */
+  const roles = ["building web products.", "shipping clean code.", "solving real problems."];
+  const roleEl = document.getElementById('typedRole');
+  let roleIndex = 0, charIndex = 0, deleting = false;
 
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+  function typeLoop() {
+    const current = roles[roleIndex];
+    if (!deleting) {
+      charIndex++;
+      if (charIndex > current.length) {
+        deleting = true;
+        setTimeout(typeLoop, 1400);
+        return;
+      }
+    } else {
+      charIndex--;
+      if (charIndex === 0) {
+        deleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+      }
+    }
+    roleEl.innerHTML = current.slice(0, charIndex) + '<span class="cursor"></span>';
+    setTimeout(typeLoop, deleting ? 30 : 55);
+  }
+
+  // Запуск усього процесу при завантаженні DOM
+  document.addEventListener('DOMContentLoaded', () => {
+    init();
+    typeLoop();
+  });
+</script>
 </body>
 </html>
