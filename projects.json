@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Fintra",
+    "desc": "Personal finance dashboard with real-time bank sync",
+    "stack": "React · Node",
+    "year": "2026",
+    "status": "live",
+    "link": "https://github.com/yourusername/fintra",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=60"
+  },
+  {
+    "title": "Loomly Commerce",
+    "desc": "Headless storefront for a DTC furniture brand",
+    "stack": "Next.js",
+    "year": "2025",
+    "status": "live",
+    "link": "https://github.com/yourusername/loomly",
+    "image": "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=60"
+  },
+  {
+    "title": "Pome",
+    "desc": "Recipe manager with automatic grocery lists",
+    "stack": "React Native",
+    "year": "2024",
+    "status": "archived",
+    "link": "https://github.com/yourusername/pome",
+    "image": "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&q=60"
+  }
+]
