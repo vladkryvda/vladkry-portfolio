@@ -1,6 +1,6 @@
 [
   {
-    "repo": "yourusername/my-awesome-app",
+    "repo": "vladkryvda/age-verification-map",
     "title": "Мій найкращий проєкт",
     "description": "Кастомний опис проєкту, який перекриває стандартний опис із GitHub.",
     "tech": ["React", "TypeScript", "Tailwind CSS"],
