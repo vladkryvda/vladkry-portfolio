@@ -126,18 +126,19 @@
         .projects-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }
 
+        /* Оновлена картка: тепер це горизонтальний flex-контейнер */
         .project-row {
             background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 24px;
+            border-radius: 12px;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: border-color 0.2s, background-color 0.2s;
+            gap: 24px;
+            align-items: flex-start;
+            transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
             text-decoration: none;
             color: inherit;
         }
@@ -147,10 +148,30 @@
             background-color: #141414;
         }
 
+        /* Стилі для прев'ю-зображення */
+        .project-preview {
+            width: 180px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            background-color: #000;
+        }
+
+        /* Права частина картки з текстом */
+        .project-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+            min-width: 0; /* запобігає виходу тексту за межі */
+        }
+
         .project-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             gap: 20px;
         }
 
@@ -177,7 +198,7 @@
         .project-desc {
             color: var(--text-muted);
             font-size: 0.9rem;
-            max-width: 580px;
+            max-width: 100%;
         }
 
         .project-tech {
@@ -187,14 +208,15 @@
             margin-top: 4px;
         }
 
+        /* Сучасніші круглі теги-капсули */
         .tech-item {
-            font-family: monospace;
             font-size: 0.75rem;
-            color: #555555;
-            background-color: #0d0d0d;
-            padding: 2px 6px;
-            border-radius: 4px;
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 4px 10px;
+            border-radius: 100px;
             border: 1px solid var(--border);
+            text-transform: lowercase;
         }
 
         @media (max-width: 768px) {
@@ -208,6 +230,20 @@
                 position: static;
                 border-bottom: 1px solid var(--border);
                 padding-bottom: 40px;
+            }
+        }
+
+        /* Адаптивність для самої картки на мобільних пристроях */
+        @media (max-width: 600px) {
+            .project-row {
+                flex-direction: column;
+                gap: 16px;
+                padding: 16px;
+            }
+            .project-preview {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1.91 / 1; /* Зберігає пропорцію GitHub картки */
             }
         }
     </style>
@@ -253,14 +289,11 @@
     </div>
 
     <script>
-        // Вкажіть ваш нікнейм на GitHub
-        const GITHUB_USERNAME = 'vladkryvda'; 
-        
-        // Тег, за яким ми будемо фільтрувати проекти для портфоліо
+        const GITHUB_USERNAME = 'yourusername'; // Замініть на свій нікнейм
         const TARGET_TOPIC = 'portfolio';
 
-        const CACHE_KEY = 'portfolio_github_cache';
-        const CACHE_EXPIRY = 30 * 60 * 1000; // Кешування на 30 хвилин
+        const CACHE_KEY = 'portfolio_github_cache_v2'; // Оновили ключ, щоб очистити стару структуру
+        const CACHE_EXPIRY = 30 * 60 * 1000; 
 
         async function init() {
             const container = document.getElementById('project-list');
@@ -274,33 +307,28 @@
             }
 
             try {
-                // Отримуємо список усіх репозиторіїв користувача (до 100 шт, відсортовані за останнім оновленням)
                 const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`);
                 if (!response.ok) throw new Error('Failed to fetch from GitHub');
                 
                 const allRepos = await response.json();
 
-                // Фільтруємо репозиторії, у яких в topics є тег 'portfolio'
                 const filteredProjects = allRepos
                     .filter(repo => repo.topics && repo.topics.includes(TARGET_TOPIC))
                     .map(repo => {
-                        // Форматуємо назву (наприклад, "my-awesome-app" -> "My Awesome App")
                         const formattedTitle = repo.name
                             .replace(/-/g, ' ')
                             .replace(/\b\w/g, l => l.toUpperCase());
 
-                        // Видаляємо тег 'portfolio' зі списку технологій, залишаючи інші теги
                         const techTags = repo.topics.filter(topic => topic !== TARGET_TOPIC);
                         
-                        // Якщо інших тегів немає, використовуємо основну мову програмування репозиторію
                         if (techTags.length === 0 && repo.language) {
                             techTags.push(repo.language);
                         }
 
                         return {
+                            name: repo.name, // Зберігаємо системне ім'я для генерації лінку картинки
                             title: formattedTitle,
                             description: repo.description || 'No description provided.',
-                            // Якщо не вказано лінк на готовий сайт, ведемо на сам репозиторій
                             liveUrl: repo.homepage || repo.html_url, 
                             tech: techTags
                         };
@@ -325,15 +353,24 @@
             }
             
             container.innerHTML = projectsList.map(project => {
+                // Шлях до автоматичного зображення репозиторію
+                const imageUrl = `https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${project.name}`;
+
                 return `
                     <a href="${project.liveUrl}" target="_blank" class="project-row">
-                        <div class="project-header">
-                            <span class="project-title">${project.title}</span>
-                            <span class="project-arrow">↗</span>
-                        </div>
-                        <p class="project-desc">${project.description}</p>
-                        <div class="project-tech">
-                            ${project.tech.map(tech => `<span class="tech-item">${tech}</span>`).join('')}
+                        <!-- Зображення-прев'ю -->
+                        <img class="project-preview" src="${imageUrl}" alt="${project.title}" loading="lazy">
+                        
+                        <!-- Текстова інформація -->
+                        <div class="project-info">
+                            <div class="project-header">
+                                <span class="project-title">${project.title}</span>
+                                <span class="project-arrow">↗</span>
+                            </div>
+                            <p class="project-desc">${project.description}</p>
+                            <div class="project-tech">
+                                ${project.tech.map(tech => `<span class="tech-item">${tech}</span>`).join('')}
+                            </div>
                         </div>
                     </a>
                 `;
