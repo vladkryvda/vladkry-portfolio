@@ -245,8 +245,7 @@
             <div>
                 <h2 class="content-title">Featured Projects</h2>
                 <div class="projects-list" id="project-list">
-                    <!-- Завантаження даних... -->
-                    <p style="color: var(--text-muted)">Syncing with database...</p>
+                    <p style="color: var(--text-muted)">Syncing with GitHub...</p>
                 </div>
             </div>
         </main>
@@ -254,77 +253,76 @@
     </div>
 
     <script>
-        const CACHE_KEY = 'portfolio_projects_cache';
-        const CACHE_EXPIRY = 60 * 60 * 1000; // Кеш житиме 1 годину (в мілісекундах)
+        // Вкажіть ваш нікнейм на GitHub
+        const GITHUB_USERNAME = 'yourusername'; 
+        
+        // Тег, за яким ми будемо фільтрувати проекти для портфоліо
+        const TARGET_TOPIC = 'portfolio';
 
-        // Функція для отримання даних по конкретному репозиторію з GitHub API
-        async function fetchRepoData(projectConfig) {
-            const repoPath = projectConfig.repo;
-            try {
-                const response = await fetch(`https://api.github.com/repos/${repoPath}`);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const githubData = await response.json();
-
-                // Об'єднуємо дані: ручні налаштування з JSON мають вищий пріоритет
-                return {
-                    title: projectConfig.title || githubData.name.replace(/-/g, ' '),
-                    description: projectConfig.description || githubData.description || 'No description provided.',
-                    liveUrl: projectConfig.liveUrl || githubData.homepage || githubData.html_url,
-                    githubUrl: githubData.html_url,
-                    // Якщо в JSON немає списку технологій, беремо теги (topics) або мову розробки з GitHub
-                    tech: projectConfig.tech || githubData.topics || (githubData.language ? [githubData.language] : [])
-                };
-            } catch (error) {
-                console.warn(`Failed to fetch GitHub data for ${repoPath}. Using fallback data.`, error);
-                // Якщо GitHub API лежить або заблокований лімітом, відкочуємося до локальних даних
-                return {
-                    title: projectConfig.title || repoPath.split('/')[1],
-                    description: projectConfig.description || 'Details currently unavailable.',
-                    liveUrl: projectConfig.liveUrl || `https://github.com/${repoPath}`,
-                    githubUrl: `https://github.com/${repoPath}`,
-                    tech: projectConfig.tech || []
-                };
-            }
-        }
+        const CACHE_KEY = 'portfolio_github_cache';
+        const CACHE_EXPIRY = 30 * 60 * 1000; // Кешування на 30 хвилин
 
         async function init() {
             const container = document.getElementById('project-list');
-            
-            // 1. Перевіряємо, чи є свіжий кеш у localStorage
             const cachedData = localStorage.getItem(CACHE_KEY);
             const cachedTime = localStorage.getItem(CACHE_KEY + '_time');
             const now = Date.now();
 
             if (cachedData && cachedTime && (now - cachedTime < CACHE_EXPIRY)) {
-                // Якщо кеш свіжий, одразу рендеримо його
                 render(JSON.parse(cachedData));
                 return;
             }
 
             try {
-                // 2. Якщо кешу немає або він застарів, вантажимо ваш локальний файл projects.json
-                const response = await fetch('projects.json');
-                const projectConfigs = await response.json();
+                // Отримуємо список усіх репозиторіїв користувача (до 100 шт, відсортовані за останнім оновленням)
+                const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`);
+                if (!response.ok) throw new Error('Failed to fetch from GitHub');
+                
+                const allRepos = await response.json();
 
-                // 3. Робимо одночасні запити до GitHub API для кожного репозиторію
-                const fetchPromises = projectConfigs.map(config => fetchRepoData(config));
-                const finalProjects = await Promise.all(fetchPromises);
+                // Фільтруємо репозиторії, у яких в topics є тег 'portfolio'
+                const filteredProjects = allRepos
+                    .filter(repo => repo.topics && repo.topics.includes(TARGET_TOPIC))
+                    .map(repo => {
+                        // Форматуємо назву (наприклад, "my-awesome-app" -> "My Awesome App")
+                        const formattedTitle = repo.name
+                            .replace(/-/g, ' ')
+                            .replace(/\b\w/g, l => l.toUpperCase());
 
-                // 4. Зберігаємо новий результат у кеш
-                localStorage.setItem(CACHE_KEY, JSON.stringify(finalProjects));
+                        // Видаляємо тег 'portfolio' зі списку технологій, залишаючи інші теги
+                        const techTags = repo.topics.filter(topic => topic !== TARGET_TOPIC);
+                        
+                        // Якщо інших тегів немає, використовуємо основну мову програмування репозиторію
+                        if (techTags.length === 0 && repo.language) {
+                            techTags.push(repo.language);
+                        }
+
+                        return {
+                            title: formattedTitle,
+                            description: repo.description || 'No description provided.',
+                            // Якщо не вказано лінк на готовий сайт, ведемо на сам репозиторій
+                            liveUrl: repo.homepage || repo.html_url, 
+                            tech: techTags
+                        };
+                    });
+
+                localStorage.setItem(CACHE_KEY, JSON.stringify(filteredProjects));
                 localStorage.setItem(CACHE_KEY + '_time', now.toString());
 
-                // 5. Рендеримо проекти на сторінку
-                render(finalProjects);
+                render(filteredProjects);
 
             } catch (error) {
-                console.error('Error loading projects list:', error);
-                container.innerHTML = '<p style="color: var(--text-muted)">Failed to sync database.</p>';
+                console.error(error);
+                container.innerHTML = '<p style="color: var(--text-muted)">Failed to sync with GitHub. Please try again later.</p>';
             }
         }
 
         function render(projectsList) {
             const container = document.getElementById('project-list');
+            if (projectsList.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted)">No projects tagged with '${TARGET_TOPIC}' found.</p>`;
+                return;
+            }
             
             container.innerHTML = projectsList.map(project => {
                 return `
